@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Pay Bill | CivicConnect</title>
+  <link rel="stylesheet" href="payment.css">
+</head>
+
+<body>
+  <div class="payment-container">
+    <div class="header-section">
+      <h2>💳 Bill Payment</h2>
+      <p class="subtitle">Enter your details to pay utility bills securely.</p>
+    </div>
+
+    <form id="paymentForm">
+      <div class="field-box">
+        <label for="consumerNumber">Consumer Number</label>
+        <input type="text" id="consumerNumber" placeholder="e.g. 1092837456" required>
+      </div>
+
+      <div class="field-box">
+        <label for="billType">Utility Type</label>
+        <select id="billType">
+          <option>Electricity</option>
+          <option>Water</option>
+          <option>Gas</option>
+          <option>Property Tax</option>
+        </select>
+      </div>
+
+      <div class="field-box">
+        <label for="amount">Amount (₹)</label>
+        <input type="number" id="amount" placeholder="0.00" min="1" required>
+      </div>
+
+      <button type="submit" class="pay-btn">Proceed to Pay</button>
+    </form>
+
+    <p id="paymentMessage"></p>
+    
+    <a href="index.html" class="home-btn"> ← Cancel and Go Back</a>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

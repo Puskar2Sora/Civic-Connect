@@ -1,0 +1,111 @@
+/* --- complaint.css --- */
+
+/* Basic Reset */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Inter', sans-serif; /* A clean, modern font */
+}
+
+body {
+  background-color: #f3f4f6; /* Light gray background */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  padding: 20px;
+}
+
+/* Form Card Container */
+.form-container {
+  background: #ffffff;
+  padding: 40px;
+  border-radius: 16px;
+  width: 100%;
+  max-width: 450px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  text-align: left;
+}
+
+h2 {
+  color: #111827;
+  margin-bottom: 8px;
+  font-size: 1.5rem;
+}
+
+.subtitle {
+  color: #6b7280;
+  margin-bottom: 24px;
+  font-size: 0.9rem;
+}
+
+/* Input Groups */
+.input-group {
+  margin-bottom: 20px;
+}
+
+label {
+  display: block;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #374151;
+  margin-bottom: 6px;
+}
+
+input, select, textarea {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  font-size: 1rem;
+  color: #1f2937;
+  transition: border-color 0.2s;
+}
+
+input:focus, select:focus, textarea:focus {
+  border-color: #2563eb; /* Blue highlight */
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+/* Submit Button */
+.submit-btn {
+  width: 100%;
+  padding: 14px;
+  background-color: #2563eb;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.submit-btn:hover {
+  background-color: #1d4ed8;
+}
+
+/* Feedback Message */
+#complaintMessage {
+  margin-top: 20px;
+  text-align: center;
+  font-weight: 500;
+  color: #059669; /* Green for success */
+}
+
+/* Navigation Link */
+.home-link {
+  display: block;
+  text-align: center;
+  margin-top: 20px;
+  color: #6b7280;
+  text-decoration: none;
+  font-size: 0.85rem;
+}
+
+.home-link:hover {
+  color: #2563eb;
+  text-decoration: underline;
+}

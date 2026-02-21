@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Register Complaint | CivicConnect</title>
+  <link rel="stylesheet" href="complaint.css">
+</head>
+
+<body>
+  <div class="form-container">
+    <h2>📢 Lodge a Complaint</h2>
+    <p class="subtitle">Please provide details about the local issue.</p>
+
+    <form id="complaintForm">
+      <div class="input-group">
+        <label for="name">Full Name</label>
+        <input type="text" id="name" placeholder="e.g. John Doe" required>
+      </div>
+
+      <div class="input-group">
+        <label for="type">Issue Type</label>
+        <select id="type">
+          <option>Road Damage</option>
+          <option>Water Leakage</option>
+          <option>Street Light</option>
+          <option>Garbage Disposal</option>
+        </select>
+      </div>
+
+      <div class="input-group">
+        <label for="description">Description</label>
+        <textarea id="description" rows="5" placeholder="Describe the problem in detail..." required></textarea>
+      </div>
+
+      <button type="submit" class="submit-btn">Submit Complaint</button>
+    </form>
+
+    <p id="complaintMessage"></p>
+    
+    <a href="index.html" class="home-link">← Back to Home</a>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

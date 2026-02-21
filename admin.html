@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Admin Dashboard | CivicConnect</title>
+  <link rel="stylesheet" href="admin.css">
+</head>
+
+<body>
+  <div class="admin-wrapper">
+    <nav class="admin-nav">
+      <h1>CivicConnect <span>Admin</span></h1>
+      <a href="index.html" class="exit-btn">Logout</a>
+    </nav>
+
+    <main class="dashboard-content">
+      <section class="data-card">
+        <div class="card-header">
+          <h3>📢 Public Complaints</h3>
+          <span class="count-badge" id="complaintCount">0</span>
+        </div>
+        <div class="list-container">
+          <ul id="complaintList">
+            </ul>
+        </div>
+      </section>
+
+      <section class="data-card">
+        <div class="card-header">
+          <h3>💳 Payment Transactions</h3>
+          <span class="count-badge blue" id="paymentCount">0</span>
+        </div>
+        <div class="list-container">
+          <ul id="paymentList">
+            </ul>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
