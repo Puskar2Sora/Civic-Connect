@@ -1,131 +1,156 @@
-/* --- payment.css --- */
+/* --- Elite Heavy-CSS payment.css --- */
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&family=JetBrains+Mono:wght@400;700&display=swap');
 
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  font-family: 'Segoe UI', sans-serif;
+:root {
+    --primary: #8b5cf6;
+    --primary-glow: rgba(139, 92, 246, 0.4);
+    --navy: #020617;
+    --glass: rgba(255, 255, 255, 0.03);
+    --glass-border: rgba(255, 255, 255, 0.08);
 }
+
+* { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Plus Jakarta Sans', sans-serif; }
 
 body {
-  background-color: #f0f4f8; /* Soft blue-gray background */
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 100vh;
-  padding: 20px;
+    background-color: var(--navy);
+    /* 🌌 Radiant Backdrop */
+    background-image: radial-gradient(circle at center, #1e1b4b 0%, var(--navy) 100%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 20px;
 }
 
+/* --- 🏛️ The Glass Vault --- */
 .payment-container {
-  background: #ffffff;
-  padding: 40px;
-  border-radius: 20px;
-  width: 100%;
-  max-width: 450px;
-  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.1);
-  border-top: 8px solid #2563eb; /* Blue accent at the top */
+    background: var(--glass);
+    backdrop-filter: blur(25px);
+    border: 1px solid var(--glass-border);
+    padding: 50px;
+    border-radius: 45px;
+    width: 100%;
+    max-width: 480px;
+    box-shadow: 0 40px 100px rgba(0, 0, 0, 0.6);
+    border-top: 8px solid var(--primary); /* Glowing Accent */
+    animation: portalEntry 0.8s cubic-bezier(0.19, 1, 0.22, 1);
 }
 
-.header-section {
-  text-align: center;
-  margin-bottom: 30px;
+@keyframes portalEntry {
+    from { opacity: 0; transform: scale(0.9) translateY(20px); filter: blur(10px); }
+    to { opacity: 1; transform: scale(1) translateY(0); filter: blur(0); }
 }
+
+.header-section { text-align: center; margin-bottom: 40px; }
 
 h2 {
-  color: #1e293b;
-  font-size: 1.6rem;
-  margin-bottom: 8px;
+    color: white;
+    font-size: 2rem;
+    font-weight: 800;
+    letter-spacing: -1.5px;
+    margin-bottom: 8px;
 }
 
 .subtitle {
-  color: #64748b;
-  font-size: 0.9rem;
+    color: #94a3b8;
+    font-size: 0.95rem;
+    letter-spacing: -0.2px;
 }
 
-/* Form Layout */
-.field-box {
-  margin-bottom: 20px;
-}
+/* --- ✍️ Form Fields --- */
+.field-box { margin-bottom: 25px; }
 
 label {
-  display: block;
-  font-size: 0.85rem;
-  font-weight: 600;
-  color: #475569;
-  margin-bottom: 8px;
+    display: block;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: var(--primary);
+    margin-bottom: 12px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
 }
 
 input, select {
-  width: 100%;
-  padding: 14px;
-  border: 2px solid #e2e8f0;
-  border-radius: 12px;
-  font-size: 1rem;
-  background-color: #f8fafc;
-  transition: all 0.2s ease;
+    width: 100%;
+    padding: 18px;
+    border: 1px solid var(--glass-border);
+    border-radius: 16px;
+    font-size: 1rem;
+    background-color: rgba(255, 255, 255, 0.05);
+    color: white;
+    transition: 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 
 input:focus, select:focus {
-  border-color: #2563eb;
-  background-color: #ffffff;
-  outline: none;
-  box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1);
+    border-color: var(--primary);
+    background-color: rgba(255, 255, 255, 0.08);
+    outline: none;
+    box-shadow: 0 0 25px var(--primary-glow);
+    transform: translateY(-2px);
 }
 
-/* Amount Input Specifics */
+/* --- 💎 Technical Amount Styling --- */
 input[type="number"] {
-  font-family: 'Courier New', Courier, monospace;
-  font-weight: bold;
-  font-size: 1.2rem;
-  color: #1e293b;
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 800;
+    font-size: 1.4rem;
+    color: white;
+    letter-spacing: 1px;
 }
 
-/* The Big Payment Button */
+/* --- 🚀 The Heavy-Duty Pay Button --- */
 .pay-btn {
-  width: 100%;
-  padding: 16px;
-  background-color: #2563eb;
-  color: white;
-  border: none;
-  border-radius: 12px;
-  font-size: 1.1rem;
-  font-weight: 700;
-  cursor: pointer;
-  transition: background 0.3s;
-  margin-top: 10px;
+    width: 100%;
+    height: 70px;
+    background: linear-gradient(135deg, var(--primary), #6366f1);
+    color: white;
+    border: none;
+    border-radius: 20px;
+    font-size: 1.2rem;
+    font-weight: 800;
+    cursor: pointer;
+    transition: 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    margin-top: 15px;
+    box-shadow: 0 15px 35px var(--primary-glow);
+    text-transform: uppercase;
+    letter-spacing: 1px;
 }
 
 .pay-btn:hover {
-  background-color: #1d4ed8;
-  transform: translateY(-1px);
+    transform: scale(1.05) translateY(-5px);
+    filter: brightness(1.1);
+    box-shadow: 0 25px 50px var(--primary-glow);
 }
 
-.pay-btn:active {
-  transform: translateY(0);
-}
+.pay-btn:active { transform: scale(0.98); }
 
-/* Success Message */
+/* --- ✅ Status Messaging --- */
 #paymentMessage {
-  margin-top: 25px;
-  text-align: center;
-  color: #059669;
-  font-weight: 600;
-  padding: 10px;
-  background: #ecfdf5;
-  border-radius: 8px;
+    margin-top: 30px;
+    text-align: center;
+    color: #34d399;
+    font-weight: 700;
+    padding: 15px;
+    background: rgba(52, 211, 153, 0.1);
+    border-radius: 12px;
+    border: 1px solid rgba(52, 211, 153, 0.2);
+    font-size: 0.9rem;
 }
 
-/* Navigation */
+/* --- 🏠 Navigation --- */
 .home-btn {
-  display: block;
-  text-align: center;
-  margin-top: 25px;
-  color: #94a3b8;
-  text-decoration: none;
-  font-size: 0.85rem;
+    display: block;
+    text-align: center;
+    margin-top: 30px;
+    color: #64748b;
+    text-decoration: none;
+    font-size: 0.85rem;
+    font-weight: 600;
+    transition: 0.3s;
 }
 
 .home-btn:hover {
-  color: #2563eb;
-  text-decoration: underline;
+    color: var(--primary);
+    letter-spacing: 1px;
 }

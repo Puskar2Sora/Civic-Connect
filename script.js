@@ -180,7 +180,7 @@ if (publicHistoryFeed) {
 const historyFeed = document.getElementById('publicHistoryFeed');
 
 if (historyFeed) {
-    // 1. Fetch RESOLVED items
+    // 1. Fetch RESOLVED items from Firestore
     db.collection("complaints")
       .where("status", "==", "Resolved")
       .orderBy("createdAt", "desc")
@@ -190,19 +190,24 @@ if (historyFeed) {
         let docs = [];
         snapshot.forEach(doc => docs.push(doc.data()));
         
-        // Loop twice for seamless marquee
-        const loopData = [...docs, ...docs];
+        if (docs.length === 0) return;
+
+        // 🚀 THE HEAVY LOGIC: Triple the data to prevent gaps during the -50% jump
+        const loopData = [...docs, ...docs, ...docs];
 
         loopData.forEach((data) => {
-            const dateStr = data.createdAt ? data.createdAt.toDate().toLocaleDateString() : "Just Now";
+            const dateStr = data.createdAt ? data.createdAt.toDate().toLocaleDateString() : "22/2/2026";
             const card = document.createElement("div");
+            
+            // Apply the Heavy-Duty history-card class
             card.className = "history-card";
+            
             card.innerHTML = `
-                <div style="font-size: 0.7rem; color: #16a34a; font-weight: 800; margin-bottom: 5px;">
-                    ✅ FIXED ON ${dateStr}
+                <div style="font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; color: #10b981; font-weight: 800; letter-spacing: 2px; margin-bottom: 12px; text-transform: uppercase;">
+                     FIXED ON ${dateStr}
                 </div>
-                <h4 style="margin-bottom: 5px;">${data.type}</h4>
-                <p style="font-size: 0.8rem; color: #64748b;">${data.description}</p>
+                <h3 style="color: white; font-weight: 800; letter-spacing: -1px; margin-bottom: 8px;">${data.type}</h3>
+                <p style="color: #94a3b8; font-size: 0.95rem; line-height: 1.5; font-weight: 400;">${data.description}</p>
             `;
             historyFeed.appendChild(card);
         });
@@ -210,3 +215,15 @@ if (historyFeed) {
         console.error("Firestore Index needed! Click the link in the console error.");
     });
 }
+// --- script.js: Splash Screen Controller ---
+document.addEventListener("DOMContentLoaded", () => {
+    const overlay = document.getElementById('introOverlay');
+    
+    if (overlay) {
+        // Wait 5 seconds, then vanish
+        setTimeout(() => {
+            overlay.classList.add('intro-hidden');
+            console.log("Portal Initialized. Welcome, Puskar Nath.");
+        }, 5000); 
+    }
+});

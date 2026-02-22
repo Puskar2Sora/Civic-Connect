@@ -1,100 +1,299 @@
-/* --- branch.css --- */
-.branch-hero {
-    background: #0f172a;
+/* --- Elite Heavy-CSS branch.css --- */
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap');
+
+:root {
+    --primary: #8b5cf6;
+    --primary-glow: rgba(139, 92, 246, 0.4);
+    --navy: #020617;
+    --slate: #1e293b;
+    --glass: rgba(255, 255, 255, 0.03);
+    --glass-border: rgba(255, 255, 255, 0.08);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Plus Jakarta Sans', sans-serif; }
+
+body {
+    background-color: var(--navy);
     color: white;
-    padding: 60px 20px;
-    text-align: center;
-    margin-bottom: 40px;
+    overflow-x: hidden;
+    background-image: radial-gradient(circle at 20% 30%, #1e1b4b 0%, transparent 40%),
+                      radial-gradient(circle at 80% 70%, #2e1065 0%, transparent 40%);
 }
 
-.branch-hero h1 span {
-    color: #3b82f6;
-    font-weight: 300;
-}
-
-.info-wrapper {
-    max-width: 1100px;
-    margin: 0 auto;
+/* --- 1. THE BENTO GRID (Compact Alignment) --- */
+.bento-grid-container {
+    max-width: 1200px;
+    margin: 40px auto;
     display: grid;
-    grid-template-columns: 2fr 1fr;
-    gap: 30px;
-    padding: 0 20px;
+    grid-template-columns: repeat(4, 1fr);
+    grid-auto-rows: minmax(180px, auto);
+    gap: 20px;
+    padding: 20px;
 }
 
-/* --- Cards Styling --- */
-.info-card, .contact-card, .officer-card {
-    background: white;
-    border-radius: 16px;
-    padding: 25px;
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
-    border: 1px solid #e2e8f0;
-    margin-bottom: 25px;
+.bento-card {
+    background: var(--glass);
+    backdrop-filter: blur(15px);
+    border-radius: 35px;
+    padding: 30px;
+    border: 1px solid var(--glass-border);
+    transition: 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
+    position: relative;
+    overflow: hidden;
 }
 
-.info-card h3 {
-    margin-bottom: 15px;
-    color: #1e293b;
-    border-left: 4px solid #2563eb;
-    padding-left: 10px;
+/* Hover "Heavy" Glow Effect */
+.bento-card:hover {
+    transform: translateY(-10px) scale(1.02);
+    border-color: var(--primary);
+    box-shadow: 0 20px 40px rgba(0,0,0,0.4), 0 0 20px var(--primary-glow);
 }
 
-/* --- Officer Profile --- */
-.officer-card {
-    text-align: center;
-    border-top: 5px solid #2563eb;
+/* Card Sizes */
+.hero-card { grid-column: span 3; grid-row: span 2; display: flex; flex-direction: column; justify-content: center; }
+.status-card { grid-column: span 1; grid-row: span 1; text-align: center; }
+.officer-card { grid-column: span 1; grid-row: span 2; }
+.map-card { grid-column: span 2; grid-row: span 2; padding: 0; }
+.contact-card { grid-column: span 2; display: flex; align-items: center; justify-content: space-between; }
+
+/* --- 2. HEAVY ANIMATIONS --- */
+@keyframes slideIn {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
 }
 
-.officer-img {
-    font-size: 4rem;
-    background: #f1f5f9;
-    width: 100px;
-    height: 100px;
-    margin: 0 auto 15px;
-    border-radius: 50%;
+.bento-card { animation: slideIn 0.8s ease backwards; }
+.hero-card { animation-delay: 0.1s; }
+.status-card { animation-delay: 0.2s; }
+.map-card { animation-delay: 0.3s; }
+
+/* Rotating Border Light */
+.hero-card::before {
+    content: '';
+    position: absolute;
+    top: -50%; left: -50%;
+    width: 200%; height: 200%;
+    background: conic-gradient(transparent, var(--primary), transparent 30%);
+    animation: rotate 6s linear infinite;
+    z-index: -1;
+    opacity: 0.3;
+}
+
+@keyframes rotate { 100% { transform: rotate(360deg); } }
+
+/* --- 3. TYPOGRAPHY & UI (Beautiful Text) --- */
+h1 { font-size: 3.5rem; font-weight: 800; line-height: 1; letter-spacing: -2px; }
+h1 span { color: var(--primary); text-shadow: 0 0 20px var(--primary-glow); }
+p { font-size: 1rem; color: #94a3b8; margin-top: 15px; }
+
+.avatar-large {
+    width: 100px; height: 100px;
+    background: linear-gradient(45deg, var(--primary), #3b82f6);
+    border-radius: 25px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 2.5rem; font-weight: 800; margin-bottom: 20px;
+}
+
+.status-badge {
+    background: #064e3b; color: #34d399;
+    padding: 8px 20px; border-radius: 50px;
+    font-size: 0.7rem; font-weight: 900; letter-spacing: 2px;
+}
+
+#branchMap { height: 100%; width: 100%; }
+
+/* --- Heavy-Duty Glass Navbar --- */
+.glass-navbar {
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 90%;
+    max-width: 1200px;
+    height: 70px;
+    z-index: 2000;
     display: flex;
     align-items: center;
-    justify-content: center;
+    padding: 0 30px;
+    animation: navSlideDown 1s cubic-bezier(0.19, 1, 0.22, 1) both;
 }
 
-.officer-card h4 { font-size: 1.2rem; margin-bottom: 5px; }
-.officer-card span { color: #64748b; font-size: 0.9rem; }
+@keyframes navSlideDown {
+    from { transform: translate(-50%, -100px); opacity: 0; }
+    to { transform: translate(-50%, 0); opacity: 1; }
+}
 
-/* --- Timing Grid --- */
-.time-row {
+.nav-blur-bg {
+    position: absolute;
+    inset: 0;
+    background: rgba(15, 23, 42, 0.6);
+    backdrop-filter: blur(20px) saturate(180%);
+    border-radius: 24px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), 
+                inset 0 0 20px rgba(139, 92, 246, 0.1);
+    z-index: -1;
+}
+
+.nav-content {
+    width: 100%;
     display: flex;
     justify-content: space-between;
-    padding: 10px 0;
-    border-bottom: 1px solid #f1f5f9;
+    align-items: center;
 }
 
-.status .open {
-    color: #16a34a;
-    background: #f0fdf4;
-    padding: 2px 10px;
-    border-radius: 20px;
-}
-
-/* --- Map Placeholder --- */
-.map-box {
-    margin-top: 20px;
-    height: 200px;
-    background: #f1f5f9;
-    border-radius: 12px;
+/* Logo Animation */
+.nav-logo {
     display: flex;
     align-items: center;
-    justify-content: center;
-    color: #94a3b8;
-    border: 2px dashed #cbd5e1;
+    gap: 12px;
+    cursor: pointer;
 }
 
-.contact-officer {
-    margin-top: 20px;
-    width: 100%;
-    background: #2563eb;
-    color: white;
-    border: none;
-    padding: 12px;
-    border-radius: 8px;
+.logo-icon {
+    font-size: 1.5rem;
+    transition: 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.nav-logo:hover .logo-icon { transform: rotate(15deg) scale(1.2); }
+
+.logo-text {
+    font-weight: 800;
+    font-size: 1.2rem;
+    letter-spacing: -0.5px;
+}
+
+.logo-text span {
+    color: var(--primary);
+    text-shadow: 0 0 15px var(--primary-glow);
+}
+
+/* Nav Items & Buttons */
+.nav-links {
+    display: flex;
+    align-items: center;
+    gap: 25px;
+}
+
+.nav-item {
+    color: #94a3b8;
+    text-decoration: none;
     font-weight: 600;
-    cursor: pointer;
+    font-size: 0.9rem;
+    transition: 0.3s;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.nav-item:hover { color: white; transform: translateY(-2px); }
+
+.nav-divider {
+    width: 1px;
+    height: 25px;
+    background: rgba(255, 255, 255, 0.1);
+}
+
+/* The Animated Exit Button */
+.exit-btn {
+    position: relative;
+    padding: 10px 24px;
+    background: var(--primary);
+    color: white;
+    text-decoration: none;
+    font-weight: 700;
+    font-size: 0.85rem;
+    border-radius: 14px;
+    overflow: hidden;
+    transition: 0.4s;
+}
+
+.btn-glow {
+    position: absolute;
+    top: -50%; left: -50%;
+    width: 200%; height: 200%;
+    background: conic-gradient(from 180deg at 50% 50%, transparent, white, transparent);
+    animation: rotateBtn 4s linear infinite;
+    opacity: 0.3;
+}
+
+@keyframes rotateBtn { 100% { transform: rotate(360deg); } }
+
+.exit-btn:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 25px var(--primary-glow);
+}
+
+/* --- Elite Typographic System --- */
+
+/* 1. Global Text Polish */
+body {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+}
+
+/* 2. Hero Headline Fix */
+.hero-card h1 {
+    font-size: clamp(2.5rem, 6vw, 4.2rem); /* Dynamic scaling */
+    font-weight: 800;
+    line-height: 1.05; /* Tight for modern look */
+    letter-spacing: -3px; /* "Heavy" styling */
+    margin-bottom: 20px;
+}
+
+.hero-card h1 span {
+    display: block;
+    background: linear-gradient(135deg, #a78bfa, #8b5cf6);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    filter: drop-shadow(0 0 15px rgba(139, 92, 246, 0.3));
+    margin-top: 5px;
+}
+
+/* 3. Card Headings & Body */
+h3 {
+    font-size: 1.4rem;
+    font-weight: 700;
+    letter-spacing: -0.5px;
+    color: white;
+    margin-bottom: 12px;
+}
+
+p {
+    font-size: 1.05rem;
+    font-weight: 400;
+    line-height: 1.6; /* Breathing room for eyes */
+    color: #94a3b8; /* Muted Slate for secondary info */
+    max-width: 600px;
+}
+
+/* 4. Small UI Writing (Badges/Dates) */
+.badge-pill, .status-badge {
+    text-transform: uppercase;
+    font-size: 0.7rem;
+    font-weight: 900;
+    letter-spacing: 2px;
+}
+
+.t-row strong, .c-item strong {
+    color: white;
+    font-weight: 700;
+    font-size: 0.9rem;
+}
+
+.t-row span, .c-item span {
+    font-size: 0.85rem;
+    color: #64748b;
+    margin-right: 10px;
+}
+
+/* 5. The "Quote" Effect for Officer Bio */
+.quote {
+    font-style: italic;
+    font-size: 1.1rem;
+    color: #cbd5e1;
+    border-left: 3px solid var(--primary);
+    padding-left: 20px;
+    margin: 20px 0;
 }
