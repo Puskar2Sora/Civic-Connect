@@ -4,9 +4,7 @@
     <meta charset="UTF-8">
     <title>Lodge Complaint | CivicConnect</title>
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-    
     <link rel="stylesheet" href="style.css">
-    
     <link rel="stylesheet" href="complaint.css">
 </head>
 <body>
@@ -35,22 +33,23 @@
                     <option>Garbage Disposal</option>
                 </select>
             </div>
-<div class="input-group full-width">
-    <label>Pin the Issue Location</label>
-    <p class="helper-text">Drag the marker or click on the map to select the exact spot.</p>
-    
-    <div class="map-wrapper">
-        <div id="map"></div>
-        <div class="map-badge">📍 Map Picker Active</div>
-    </div>
 
-    <input type="hidden" id="lat" name="latitude">
-    <input type="hidden" id="lng" name="longitude">
-    
-    <button type="button" id="detectLocation" class="location-btn">
-        🎯 Use My Current Location
-    </button>
-</div>
+            <div class="input-group full-width">
+                <label>Pin the Issue Location</label>
+                <p class="helper-text">Drag the marker or click on the map to select the exact spot.</p>
+                
+                <div class="map-wrapper">
+                    <div id="map"></div>
+                    <div class="map-badge">📍 Map Picker Active</div>
+                </div>
+
+                <input type="hidden" id="lat" name="latitude">
+                <input type="hidden" id="lng" name="longitude">
+                
+                <button type="button" id="detectLocation" class="location-btn">
+                    🎯 Use My Current Location
+                </button>
+            </div>
 
             <div class="input-group">
                 <label>Detailed Description</label>
@@ -63,6 +62,11 @@
     </div>
 
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
+
     <script src="script.js"></script>
 </body>
 </html>

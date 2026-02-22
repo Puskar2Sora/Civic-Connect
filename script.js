@@ -1,7 +1,19 @@
-// --- script.js ---
-const API_URL = "http://localhost:5000/api";
+// --- 1. Your Unique Firebase Configuration ---
+const firebaseConfig = {
+  apiKey: "AIzaSyD_HHHm5JU-SYoxr3pKbQoLS1Fh58wxNRo",
+  authDomain: "civic-k.firebaseapp.com",
+  projectId: "civic-k",
+  storageBucket: "civic-k.firebasestorage.app",
+  messagingSenderId: "1025366232937",
+  appId: "1:1025366232937:web:adbfc8c908a4b6e2db77f8",
+  measurementId: "G-1T8NFL6HRB"
+};
 
-// --- 1. Map Picker Initialization ---
+// Initialize Firebase
+firebase.initializeApp(firebaseConfig);
+const db = firebase.firestore();
+console.log("🔥 Firebase Initialized successfully!");
+// --- 2. Map Picker Initialization ---
 let map, marker;
 const initialPos = [22.5726, 88.3639]; // Kolkata Center
 
@@ -9,7 +21,11 @@ if (document.getElementById('map')) {
     map = L.map('map').setView(initialPos, 14);
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
 
-    // Create the draggable picker
+    // FIX: This solves the "White Box" issue seen in your previous screenshot
+    setTimeout(() => {
+        map.invalidateSize();
+    }, 500);
+
     marker = L.marker(initialPos, { draggable: true }).addTo(map);
 
     // Sync coordinates when dragging stops
@@ -27,7 +43,7 @@ if (document.getElementById('map')) {
     });
 }
 
-// --- 2. Complaint Submission (To Backend) ---
+// --- 3. Submit Complaint to Firebase Firestore ---
 const complaintForm = document.getElementById("complaintForm");
 if (complaintForm) {
     complaintForm.addEventListener("submit", async function (e) {
@@ -40,57 +56,51 @@ if (complaintForm) {
             location: {
                 lat: parseFloat(document.getElementById('lat').value) || marker.getLatLng().lat,
                 lng: parseFloat(document.getElementById('lng').value) || marker.getLatLng().lng
-            }
+            },
+            status: "Pending", // Default status
+            createdAt: firebase.firestore.FieldValue.serverTimestamp() // Auto-timestamp
         };
 
         try {
-            const response = await fetch(`${API_URL}/complaints`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(complaintData)
-            });
+            // Save directly to 'complaints' collection in Cloud Firestore
+            await db.collection("complaints").add(complaintData);
 
-            if (response.ok) {
-                const result = await response.json();
-                document.getElementById("complaintMessage").innerHTML = `
-                    <div style="background: #dcfce7; padding: 15px; border-radius: 12px; border: 1px solid #16a34a; color: #16a34a; text-align: center;">
-                        <strong>Success!</strong> Filed at Location: ${complaintData.location.lat.toFixed(4)}, ${complaintData.location.lng.toFixed(4)}
-                    </div>`;
-                complaintForm.reset();
-            }
+            document.getElementById("complaintMessage").innerHTML = `
+                <div style="background: #dcfce7; padding: 15px; border-radius: 12px; border: 1px solid #16a34a; color: #16a34a; text-align: center;">
+                    <strong>Success!</strong> Complaint saved to Firebase Cloud.
+                </div>`;
+            complaintForm.reset();
         } catch (error) {
-            console.error("Connection lost to Express server.");
+            console.error("Firebase Error:", error);
+            alert("Error saving to cloud. Make sure Firestore rules are set to 'test mode'.");
         }
     });
 }
 
-// --- 3. Admin Dashboard (Load from Backend) ---
+// --- 4. Admin Dashboard (Real-time Sync) ---
 const complaintList = document.getElementById("complaintList");
 if (complaintList) {
-    window.addEventListener('load', loadAdminData);
-}
-
-async function loadAdminData() {
-    try {
-        const response = await fetch(`${API_URL}/admin/complaints`);
-        const data = await response.json();
-
-        complaintList.innerHTML = data.map(c => `
-            <li>
+    // onSnapshot ensures the list updates automatically when new data arrives
+    db.collection("complaints").orderBy("createdAt", "desc").onSnapshot((querySnapshot) => {
+        complaintList.innerHTML = "";
+        querySnapshot.forEach((doc) => {
+            const c = doc.data();
+            const id = doc.id;
+            
+            const li = document.createElement("li");
+            li.innerHTML = `
                 <div class="card-info">
                     <strong>${c.type}</strong> by ${c.name}<br>
-                    <span>Coordinates: ${c.location.lat.toFixed(4)}, ${c.location.lng.toFixed(4)}</span><br>
+                    <span>Location: ${c.location.lat.toFixed(4)}, ${c.location.lng.toFixed(4)}</span><br>
                     <small>Status: ${c.status}</small>
                 </div>
-                ${c.status === 'Pending' ? `<button onclick="resolve('${c._id}')">Resolve</button>` : '✅'}
-            </li>
-        `).join('');
-    } catch (err) {
-        console.log("Error loading dashboard data.");
-    }
+                ${c.status === 'Pending' ? `<button onclick="resolve('${id}')">Resolve</button>` : '✅'}
+            `;
+            complaintList.appendChild(li);
+        });
+    });
 }
 
 async function resolve(id) {
-    await fetch(`${API_URL}/admin/resolve/${id}`, { method: 'PATCH' });
-    loadAdminData(); // Refresh list
+    await db.collection("complaints").doc(id).update({ status: "Resolved" });
 }
