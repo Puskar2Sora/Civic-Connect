@@ -117,17 +117,6 @@
 </table>
 
 <hr />
-
-<h3 align="center">📡 System Architecture Mapping</h3>
-<table width="100%" align="center">
-    <td width="50%">
-       <img src="assets/img7.png" width="100%" style="border-radius:15px;" />
-       <p align="center"><i>Module 1: Navigation Logic</i></p>
-    </td>
-  </tr>
-</table>
-
-<hr />
 <h2 align="center">📡 Extended System Modules & Asset Gallery</h2>
 <p align="center">A deep dive into the terminal's sub-systems and operational logic.</p>
 
