@@ -110,4 +110,8 @@
 <li><b>status:</b> Toggle logic between <code>Pending</code> and <code>Resolved</code>.</li>
 </ul>
 
+<<<<<<< HEAD
 <hr />
+=======
+<hr />
+>>>>>>> 59963bbed8acbe06287a4a6635df24f9756c0d14
