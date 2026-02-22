@@ -91,10 +91,15 @@
 {
   "project": "CivicConnect",
   "version": "2.1.0",
-  "design": "Heavy-Duty Glassmorphism",
-  "database": "Cloud Firestore",
-  "nodal_officer": "Puskar Nath (SL-042)",
-  "location": "Salt Lake Sector V, Kolkata"
+  "authority": "Puskar Nath (SL-042)",
+  "location": {
+    "sector": "Salt Lake Sector V",
+    "region": "Kolkata, India"
+  },
+  "database": {
+    "collection": "complaints",
+    "fields": ["type", "description", "location", "status", "createdAt"]
+  }
 }
 ```
 
@@ -106,8 +111,3 @@
 </ul>
 
 <hr />
-
-<div align="center">
-<p><b>Developed with ❤️ for Digital Excellence</b></p>
-<img src="https://www.google.com/search?q=https://img.shields.io/badge/Government_of_Digital_Services-Sector_V-020617%3Fstyle%3Dflat-square" />
-</div>
