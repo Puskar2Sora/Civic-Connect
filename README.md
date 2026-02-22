@@ -43,9 +43,32 @@
     </td>
   </tr>
 </table>
+<hr />
 
 <hr />
 
+<h2 align="center">🎥 Interactive System Walkthrough</h2>
+<p align="center">
+  A 4K cinematic demonstration of the <b>CivicConnect</b> terminal in a live municipal environment.
+</p>
+<hr />
+<div align="center">
+  <table width="90%" border="0" cellspacing="0" cellpadding="0">
+    <tr>
+      <td align="center" bgcolor="#020617" style="border: 2px solid #8b5cf6; border-radius: 30px; overflow: hidden; padding: 0;">
+        <a href="https://www.youtube.com/watch?v=ax8yeHT5P1E" target="_blank">
+          <img src="https://raw.githubusercontent.com/Puskar2Sora/Civic-Connect/main/assets/img1.png" width="50%" alt="Watch the Demo" style="display: block; opacity: 0.9;" />
+          <div style="padding: 20px; background: rgba(139, 92, 246, 0.2); color: #f8fafc; font-weight: 800; letter-spacing: 2px; text-decoration: none;">
+             ▶ CLICK TO PLAY SYSTEM DEMO (SL-042)
+          </div>
+        </a>
+      </td>
+    </tr>
+  </table>
+  <p align="center">
+    <small><i>Showcasing 5s Intro, Real-time Firestore Sync, and Leaflet.js Geolocation.</i></small>
+  </p>
+</div>
 <h2>💎 Elite Design Philosophy</h2>
 <blockquote>
   CivicConnect is engineered as a <b>Heavy CSS Terminal</b>. 
