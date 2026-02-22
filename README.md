@@ -96,6 +96,66 @@
 
 <hr />
 
+<hr />
+
+<h2 align="center">📡 Technical Architecture Mapping</h2>
+<p align="center">
+  A comprehensive visualization of the <b>CivicConnect</b> ecosystem, from the <b>5s Holographic Splash</b> 
+  to the <b>Real-time Firestore</b> data layer.
+</p>
+
+```mermaid
+graph TD
+    %% Global Styling
+    classDef obsidian fill:#020617,stroke:#8b5cf6,stroke-width:2px,color:#f8fafc;
+    classDef purpleGlow fill:#1e1b4b,stroke:#6366f1,stroke-width:2px,color:#a78bfa;
+    classDef highlight fill:#8b5cf6,stroke:#fff,stroke-width:2px,color:#fff;
+
+    %% Client Layer
+    subgraph Client [🖥️ Client Browser / Kiosk Interface]
+        direction TB
+        Intro(⚡ 5s Splash Intro) --> Bento(🏛️ Bento Grid Dashboard)
+        
+        subgraph Public_Services [Public Services]
+            Bento --> Complaint(📝 Complaint Filing)
+            Bento --> Tracker(🔄 Infinite Progress Marquee)
+            Bento --> Payment(💳 Payment Vault)
+        end
+        
+        subgraph Admin_Portal [Admin Portal]
+            Officer(👨‍💼 Nodal Officer Login) --> Dashboard(📊 Admin Command Center)
+            Dashboard --> Map(📍 Inverted Issue Map)
+        end
+    end
+
+    %% Logic Layer
+    subgraph Logic [⚙️ Interaction Logic]
+        Physics(🌀 Cubic-Bezier Physics)
+        Geo(🗺️ Leaflet.js Geolocation)
+        TripleData(🔄 Data Tripling Logic)
+    end
+
+    %% Data Layer
+    subgraph Cloud [☁️ Firebase Cloud Services]
+        Firestore[(🔥 Cloud Firestore)]
+        Auth(🔐 Firebase Auth)
+    end
+
+    %% Connections
+    Complaint --> Geo
+    Geo --> Firestore
+    Firestore -- Real-time Snapshots --> Tracker
+    Tracker --> TripleData
+    Dashboard -- Update Status --> Firestore
+    Payment --> Auth
+    Auth --> Firestore
+
+    %% Applying Styles
+    class Client,Public_Services,Admin_Portal obsidian;
+    class Logic,Cloud purpleGlow;
+    class Intro,Bento,Officer highlight;
+```
+
 <h2>🛠️ Technical Infrastructure</h2>
 <table width="100%">
   <tr>
