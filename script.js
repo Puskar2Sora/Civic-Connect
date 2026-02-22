@@ -78,29 +78,135 @@ if (complaintForm) {
 }
 
 // --- 4. Admin Dashboard (Real-time Sync) ---
-const complaintList = document.getElementById("complaintList");
-if (complaintList) {
-    // onSnapshot ensures the list updates automatically when new data arrives
-    db.collection("complaints").orderBy("createdAt", "desc").onSnapshot((querySnapshot) => {
-        complaintList.innerHTML = "";
-        querySnapshot.forEach((doc) => {
-            const c = doc.data();
+// Add this to the bottom of your existing script.js
+
+const adminMapElement = document.getElementById('adminMap');
+const adminList = document.getElementById('adminComplaintList');
+
+if (adminMapElement) {
+    // 1. Initialize Admin Master Map
+    const adminMap = L.map('adminMap').setView([22.5726, 88.3639], 13);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(adminMap);
+
+    // 2. Real-time Listener for Firestore
+    db.collection("complaints").orderBy("createdAt", "desc").onSnapshot((snapshot) => {
+        adminList.innerHTML = "";
+        let pendingCount = 0;
+
+        // Clear existing markers before redraw if necessary
+        // (For simplicity in this version, markers are added once per snapshot)
+        
+        snapshot.forEach((doc) => {
+            const data = doc.data();
             const id = doc.id;
-            
+
+            if (data.status === "Pending") pendingCount++;
+
+            // A. Add Marker to Map
+            const markerColor = data.status === "Pending" ? "red" : "green";
+            L.marker([data.location.lat, data.location.lng]).addTo(adminMap)
+                .bindPopup(`<b>${data.type}</b><br>${data.description}`);
+
+            // B. Add Card to List
             const li = document.createElement("li");
+            li.className = "admin-card";
             li.innerHTML = `
-                <div class="card-info">
-                    <strong>${c.type}</strong> by ${c.name}<br>
-                    <span>Location: ${c.location.lat.toFixed(4)}, ${c.location.lng.toFixed(4)}</span><br>
-                    <small>Status: ${c.status}</small>
+                <span class="status-badge status-${data.status.toLowerCase()}">${data.status}</span>
+                <h3>${data.type}</h3>
+                <p style="color: var(--text-muted); font-size: 0.9rem; margin: 10px 0;">
+                    ${data.description}
+                </p>
+                <div style="font-size: 0.8rem; font-weight: 600;">
+                     ${data.location.lat.toFixed(4)}, ${data.location.lng.toFixed(4)}
                 </div>
-                ${c.status === 'Pending' ? `<button onclick="resolve('${id}')">Resolve</button>` : '✅'}
+                ${data.status === "Pending" ? `<button class="resolve-btn" onclick="resolveIssue('${id}')">Mark as Fixed</button>` : ""}
             `;
-            complaintList.appendChild(li);
+            adminList.appendChild(li);
+        });
+
+        document.getElementById('activeCount').innerText = pendingCount;
+    });
+}
+
+// Global function to update Firestore status
+window.resolveIssue = async function(id) {
+    try {
+        await db.collection("complaints").doc(id).update({
+            status: "Resolved"
+        });
+        console.log("Issue resolved in Cloud!");
+    } catch (error) {
+        console.error("Error updating status:", error);
+    }
+}
+
+// --- script.js: Public Transparency Feed ---
+const publicHistoryFeed = document.getElementById('publicHistoryFeed');
+
+if (publicHistoryFeed) {
+    // 1. Fetch only RESOLVED issues to show the public
+    db.collection("complaints")
+      .where("status", "==", "Resolved")
+      .orderBy("createdAt", "desc")
+      .limit(5) // Show the 5 most recent achievements
+      .onSnapshot((snapshot) => {
+        publicHistoryFeed.innerHTML = "";
+        
+        snapshot.forEach((doc) => {
+            const data = doc.data();
+            const dateStr = data.createdAt ? data.createdAt.toDate().toLocaleDateString() : "Today";
+
+            // Create the "Success" Card
+            const card = document.createElement("div");
+            card.className = "success-slide"; // New class for the animation
+            card.innerHTML = `
+                <div class="success-header">
+                    <span class="confetti">🎉</span>
+                    <span class="status-tag">GOVERNMENT AT WORK</span>
+                </div>
+                <h4>${data.type} Resolved</h4>
+                <p>${data.description}</p>
+                <div class="success-footer">
+                    <span>📍 ${data.location.lat.toFixed(2)}, ${data.location.lng.toFixed(2)}</span>
+                    <span class="success-date">Completed on ${dateStr}</span>
+                </div>
+            `;
+            publicHistoryFeed.appendChild(card);
         });
     });
 }
 
-async function resolve(id) {
-    await db.collection("complaints").doc(id).update({ status: "Resolved" });
+// --- script.js: Public History Feed Fix ---
+const historyFeed = document.getElementById('publicHistoryFeed');
+
+if (historyFeed) {
+    // 1. Fetch RESOLVED items
+    db.collection("complaints")
+      .where("status", "==", "Resolved")
+      .orderBy("createdAt", "desc")
+      .onSnapshot((snapshot) => {
+        historyFeed.innerHTML = "";
+        
+        let docs = [];
+        snapshot.forEach(doc => docs.push(doc.data()));
+        
+        // Loop twice for seamless marquee
+        const loopData = [...docs, ...docs];
+
+        loopData.forEach((data) => {
+            const dateStr = data.createdAt ? data.createdAt.toDate().toLocaleDateString() : "Just Now";
+            const card = document.createElement("div");
+            card.className = "history-card";
+            card.innerHTML = `
+                <div style="font-size: 0.7rem; color: #16a34a; font-weight: 800; margin-bottom: 5px;">
+                    ✅ FIXED ON ${dateStr}
+                </div>
+                <h4 style="margin-bottom: 5px;">${data.type}</h4>
+                <p style="font-size: 0.8rem; color: #64748b;">${data.description}</p>
+            `;
+            historyFeed.appendChild(card);
+        });
+    }, (error) => {
+        console.error("Firestore Index needed! Click the link in the console error.");
+    });
 }

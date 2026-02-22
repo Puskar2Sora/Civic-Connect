@@ -241,3 +241,104 @@ body {
     color: var(--primary);
     transform: translateX(-5px);
 }
+
+/* --- History Box Styles --- */
+.history-section {
+    padding: 60px 0;
+    background: #f1f5f9; /* Contrast background */
+}
+
+.history-grid {
+    display: flex;
+    overflow-x: auto; /* Horizontal scroll for history cards */
+    gap: 20px;
+    padding: 20px 0;
+}
+
+.history-card {
+    min-width: 300px;
+    background: var(--white);
+    padding: 20px;
+    border-radius: 20px;
+    border-left: 5px solid #16a34a; /* Green success bar */
+    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+}
+
+.history-card h4 {
+    color: var(--navy);
+    font-size: 1.1rem;
+    margin-bottom: 5px;
+}
+
+.history-card .date-badge {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    font-weight: 600;
+}
+
+/* --- Always-Sliding Marquee --- */
+.marquee-window {
+    width: 100%;
+    overflow: hidden;
+    padding: 30px 0;
+    background: rgba(255, 255, 255, 0.4);
+    border-radius: 40px;
+    backdrop-filter: blur(10px);
+}
+
+.marquee-track {
+    display: flex;
+    gap: 30px;
+    width: max-content;
+    animation: scrollSlide 25s linear infinite; /* Always sliding */
+}
+
+/* Pause on hover so citizens can read */
+.marquee-track:hover {
+    animation-play-state: paused;
+}
+
+@keyframes scrollSlide {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); } /* Loops half-way for seamless effect */
+}
+
+.history-card {
+    min-width: 320px;
+    background: var(--white);
+    padding: 25px;
+    border-radius: 25px;
+    border-top: 5px solid #16a34a; /* Success Green */
+    box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+}
+
+/* --- Always-Sliding History Track --- */
+.marquee-window {
+    width: 100%;
+    overflow: hidden;
+    padding: 20px 0;
+    background: rgba(255, 255, 255, 0.4);
+    border-radius: 30px;
+    backdrop-filter: blur(8px);
+}
+
+.marquee-track {
+    display: flex;
+    gap: 25px;
+    width: max-content;
+    animation: scrollContinuous 30s linear infinite; /* Always sliding */
+}
+
+@keyframes scrollContinuous {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); } /* Seamless loop */
+}
+
+.history-card {
+    min-width: 300px;
+    background: white;
+    padding: 20px;
+    border-radius: 20px;
+    border-top: 5px solid #16a34a;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.05);
+}

@@ -17,7 +17,6 @@
         </a>
     </div>
 </nav>
-
     <div class="kiosk-wrapper">
         <header class="hero-section">
             <h1>Welcome to Civic Portal</h1>
@@ -46,7 +45,17 @@
             </a>
         </main>
     </div>
-
+    <section class="city-tracker">
+    <div class="kiosk-wrapper">
+        <h2 class="history-title">✨ City Progress Tracker</h2>
+        <p class="history-subtitle">Live updates on issues fixed by the local administration.</p>
+        
+        <div class="marquee-window">
+            <div id="publicHistoryFeed" class="marquee-track">
+                </div>
+        </div>
+    </div>
+</section>
     <footer class="footer">
         <div class="footer-links">
             <span> Help: 1800-444-555</span> | 
@@ -76,7 +85,8 @@
             }
         }
     </script>
-    
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
     <script src="script.js"></script>
 </body>
 </html>
