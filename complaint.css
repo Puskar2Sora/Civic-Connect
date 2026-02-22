@@ -1,111 +1,124 @@
 /* --- complaint.css --- */
-
-/* Basic Reset */
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  font-family: 'Inter', sans-serif; /* A clean, modern font */
-}
-
-body {
-  background-color: #f3f4f6; /* Light gray background */
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 100vh;
-  padding: 20px;
-}
-
-/* Form Card Container */
 .form-container {
-  background: #ffffff;
-  padding: 40px;
-  border-radius: 16px;
-  width: 100%;
-  max-width: 450px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-  text-align: left;
+    background: white;
+    padding: 50px;
+    border-radius: 40px;
+    max-width: 800px;
+    margin: 40px auto;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.05);
 }
 
-h2 {
-  color: #111827;
-  margin-bottom: 8px;
-  font-size: 1.5rem;
-}
+h2 { font-size: 2.2rem; margin-bottom: 10px; color: var(--navy-dark); }
 
-.subtitle {
-  color: #6b7280;
-  margin-bottom: 24px;
-  font-size: 0.9rem;
-}
+.subtitle { color: var(--text-slate); margin-bottom: 40px; }
 
-/* Input Groups */
-.input-group {
-  margin-bottom: 20px;
-}
+/* Input Styling */
+.input-group { margin-bottom: 25px; text-align: left; }
 
 label {
-  display: block;
-  font-size: 0.85rem;
-  font-weight: 600;
-  color: #374151;
-  margin-bottom: 6px;
+    font-size: 0.9rem;
+    font-weight: 700;
+    margin-bottom: 10px;
+    display: block;
+    color: #1e293b;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
 }
 
 input, select, textarea {
-  width: 100%;
-  padding: 12px;
-  border: 1px solid #d1d5db;
-  border-radius: 8px;
-  font-size: 1rem;
-  color: #1f2937;
-  transition: border-color 0.2s;
+    width: 100%;
+    padding: 16px;
+    background: #f8fafc;
+    border: 2px solid #f1f5f9;
+    border-radius: 16px;
+    font-size: 1rem;
+    transition: 0.3s;
 }
 
 input:focus, select:focus, textarea:focus {
-  border-color: #2563eb; /* Blue highlight */
-  outline: none;
-  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+    background: white;
+    border-color: var(--primary);
+    outline: none;
+    box-shadow: 0 0 0 4px var(--primary-glow);
 }
 
-/* Submit Button */
+/* --- 📍 Map UI --- */
+#map {
+    height: 350px; /* Essential height */
+    width: 100%;
+    margin-top: 20px;
+    border-radius: 24px;
+    border: 4px solid white;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+}
+
+.location-btn {
+    background: var(--navy-dark);
+    color: white;
+    border: none;
+    padding: 15px 25px;
+    border-radius: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.3s;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.location-btn:hover { background: var(--primary); box-shadow: 0 8px 20px var(--primary-glow); }
+
 .submit-btn {
-  width: 100%;
-  padding: 14px;
-  background-color: #2563eb;
-  color: white;
-  border: none;
-  border-radius: 8px;
-  font-size: 1rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: background-color 0.2s;
+    width: 100%;
+    padding: 20px;
+    background: var(--primary);
+    color: white;
+    border: none;
+    border-radius: 18px;
+    font-size: 1.2rem;
+    font-weight: 800;
+    cursor: pointer;
+    margin-top: 30px;
+    transition: 0.3s;
 }
 
-.submit-btn:hover {
-  background-color: #1d4ed8;
+.submit-btn:hover { transform: scale(1.02); filter: brightness(1.1); }
+
+/* --- complaint.css Upgrades --- */
+.map-wrapper {
+    position: relative;
+    margin: 20px 0;
+    border-radius: 24px;
+    overflow: hidden;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+    border: 4px solid var(--white); /* High contrast border */
 }
 
-/* Feedback Message */
-#complaintMessage {
-  margin-top: 20px;
-  text-align: center;
-  font-weight: 500;
-  color: #059669; /* Green for success */
+#map {
+    height: 400px; /* Large enough for easy picking */
+    width: 100%;
+    z-index: 1;
 }
 
-/* Navigation Link */
-.home-link {
-  display: block;
-  text-align: center;
-  margin-top: 20px;
-  color: #6b7280;
-  text-decoration: none;
-  font-size: 0.85rem;
+.map-badge {
+    position: absolute;
+    top: 15px;
+    left: 15px;
+    z-index: 1000;
+    background: var(--navy);
+    color: white;
+    padding: 8px 15px;
+    border-radius: 50px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    pointer-events: none;
 }
 
-.home-link:hover {
-  color: #2563eb;
-  text-decoration: underline;
+.helper-text {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    margin-bottom: 10px;
 }

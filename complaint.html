@@ -1,45 +1,68 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Register Complaint | CivicConnect</title>
-  <link rel="stylesheet" href="complaint.css">
-</head>
-
-<body>
-  <div class="form-container">
-    <h2>📢 Lodge a Complaint</h2>
-    <p class="subtitle">Please provide details about the local issue.</p>
-
-    <form id="complaintForm">
-      <div class="input-group">
-        <label for="name">Full Name</label>
-        <input type="text" id="name" placeholder="e.g. John Doe" required>
-      </div>
-
-      <div class="input-group">
-        <label for="type">Issue Type</label>
-        <select id="type">
-          <option>Road Damage</option>
-          <option>Water Leakage</option>
-          <option>Street Light</option>
-          <option>Garbage Disposal</option>
-        </select>
-      </div>
-
-      <div class="input-group">
-        <label for="description">Description</label>
-        <textarea id="description" rows="5" placeholder="Describe the problem in detail..." required></textarea>
-      </div>
-
-      <button type="submit" class="submit-btn">Submit Complaint</button>
-    </form>
-
-    <p id="complaintMessage"></p>
+    <meta charset="UTF-8">
+    <title>Lodge Complaint | CivicConnect</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     
-    <a href="index.html" class="home-link">← Back to Home</a>
-  </div>
+    <link rel="stylesheet" href="style.css">
+    
+    <link rel="stylesheet" href="complaint.css">
+</head>
+<body>
 
-  <script src="script.js"></script>
+    <nav class="navbar">
+        <div class="nav-logo">🏛️ Civic<span>Connect</span></div>
+        <a href="index.html" class="back-link">← Back to Home</a>
+    </nav>
+
+    <div class="form-container">
+        <h2>📢 Detailed Complaint Form</h2>
+        <p class="subtitle">Precision helps us resolve issues faster.</p>
+
+        <form id="complaintForm">
+            <div class="input-group">
+                <label>Full Name</label>
+                <input type="text" id="name" placeholder="Puskar Nath" required>
+            </div>
+
+            <div class="input-group">
+                <label>Issue Type</label>
+                <select id="type">
+                    <option>Road Damage</option>
+                    <option>Water Leakage</option>
+                    <option>Street Light</option>
+                    <option>Garbage Disposal</option>
+                </select>
+            </div>
+<div class="input-group full-width">
+    <label>Pin the Issue Location</label>
+    <p class="helper-text">Drag the marker or click on the map to select the exact spot.</p>
+    
+    <div class="map-wrapper">
+        <div id="map"></div>
+        <div class="map-badge">📍 Map Picker Active</div>
+    </div>
+
+    <input type="hidden" id="lat" name="latitude">
+    <input type="hidden" id="lng" name="longitude">
+    
+    <button type="button" id="detectLocation" class="location-btn">
+        🎯 Use My Current Location
+    </button>
+</div>
+
+            <div class="input-group">
+                <label>Detailed Description</label>
+                <textarea id="description" rows="4" required></textarea>
+            </div>
+
+            <button type="submit" class="submit-btn">Submit Complaint</button>
+        </form>
+        <p id="complaintMessage"></p>
+    </div>
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="script.js"></script>
 </body>
 </html>

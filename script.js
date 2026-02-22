@@ -1,150 +1,96 @@
-// ==========================================
-// 1. UTILITY FUNCTIONS
-// ==========================================
+// --- script.js ---
+const API_URL = "http://localhost:5000/api";
 
-/**
- * Generates a random ID with a specific prefix
- */
-function generateId(prefix) { 
-    return prefix + Math.floor(Math.random() * 1000000); 
+// --- 1. Map Picker Initialization ---
+let map, marker;
+const initialPos = [22.5726, 88.3639]; // Kolkata Center
+
+if (document.getElementById('map')) {
+    map = L.map('map').setView(initialPos, 14);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
+
+    // Create the draggable picker
+    marker = L.marker(initialPos, { draggable: true }).addTo(map);
+
+    // Sync coordinates when dragging stops
+    marker.on('dragend', () => {
+        const pos = marker.getLatLng();
+        document.getElementById('lat').value = pos.lat;
+        document.getElementById('lng').value = pos.lng;
+    });
+
+    // Move pin on map click
+    map.on('click', (e) => {
+        marker.setLatLng(e.latlng);
+        document.getElementById('lat').value = e.latlng.lat;
+        document.getElementById('lng').value = e.latlng.lng;
+    });
 }
 
-/**
- * Retrieves data from localStorage
- */
-function getData(key) { 
-    return JSON.parse(localStorage.getItem(key)) || []; 
-}
-
-/**
- * Saves data to localStorage
- */
-function saveData(key, data) { 
-    localStorage.setItem(key, JSON.stringify(data)); 
-}
-
-
-// ==========================================
-// 2. COMPLAINT PAGE LOGIC
-// ==========================================
+// --- 2. Complaint Submission (To Backend) ---
 const complaintForm = document.getElementById("complaintForm");
-
 if (complaintForm) {
-    complaintForm.addEventListener("submit", function (e) {
+    complaintForm.addEventListener("submit", async function (e) {
         e.preventDefault();
 
-        // Creating the complaint object with a "Pending" status
-        const complaint = {
-            id: generateId("CIV"),
+        const complaintData = {
             name: document.getElementById("name").value,
             type: document.getElementById("type").value,
             description: document.getElementById("description").value,
-            status: "Pending",
-            createdAt: new Date().toLocaleDateString() // Using user's preferred date format
+            location: {
+                lat: parseFloat(document.getElementById('lat').value) || marker.getLatLng().lat,
+                lng: parseFloat(document.getElementById('lng').value) || marker.getLatLng().lng
+            }
         };
 
-        // Save to the complaints array
-        const complaints = getData("complaints");
-        complaints.push(complaint);
-        saveData("complaints", complaints);
+        try {
+            const response = await fetch(`${API_URL}/complaints`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(complaintData)
+            });
 
-        // Visual Success Feedback with styled alert box
-        const messageArea = document.getElementById("complaintMessage");
-        if (messageArea) {
-            messageArea.innerHTML = `
-                <div style="background: #dcfce7; padding: 15px; border-radius: 10px; margin-top: 20px; border: 1px solid #16a34a; text-align: center;">
-                    <p style="color: #16a34a; font-weight: bold;">Success! Tracking ID: <strong>${complaint.id}</strong></p>
-                    <p style="color: #16a34a; font-size: 0.85rem;">Please keep this ID for your records.</p>
-                </div>
-            `;
+            if (response.ok) {
+                const result = await response.json();
+                document.getElementById("complaintMessage").innerHTML = `
+                    <div style="background: #dcfce7; padding: 15px; border-radius: 12px; border: 1px solid #16a34a; color: #16a34a; text-align: center;">
+                        <strong>Success!</strong> Filed at Location: ${complaintData.location.lat.toFixed(4)}, ${complaintData.location.lng.toFixed(4)}
+                    </div>`;
+                complaintForm.reset();
+            }
+        } catch (error) {
+            console.error("Connection lost to Express server.");
         }
-
-        complaintForm.reset();
     });
 }
 
-
-// ==========================================
-// 3. PAYMENT PAGE LOGIC
-// ==========================================
-const paymentForm = document.getElementById("paymentForm");
-
-if (paymentForm) {
-    paymentForm.addEventListener("submit", function (e) {
-        e.preventDefault();
-
-        const payment = {
-            transactionId: generateId("TXN"),
-            consumerNumber: document.getElementById("consumerNumber").value,
-            billType: document.getElementById("billType").value,
-            amount: document.getElementById("amount").value,
-            status: "Success",
-            createdAt: new Date().toLocaleDateString()
-        };
-
-        const payments = getData("payments");
-        payments.push(payment);
-        saveData("payments", payments);
-
-        // Visual Success Feedback for payments
-        const messageArea = document.getElementById("paymentMessage");
-        if (messageArea) {
-            messageArea.innerHTML = `
-                <div style="background: #e0f2fe; padding: 15px; border-radius: 10px; margin-top: 20px; border: 1px solid #3b82f6; text-align: center;">
-                    <p style="color: #2563eb; font-weight: bold;">Payment Successful!</p>
-                    <p style="color: #2563eb; font-size: 0.85rem;">Transaction ID: <strong>${payment.transactionId}</strong></p>
-                </div>
-            `;
-        }
-
-        paymentForm.reset();
-    });
-}
-
-
-// ==========================================
-// 4. ADMIN DASHBOARD LOGIC
-// ==========================================
+// --- 3. Admin Dashboard (Load from Backend) ---
 const complaintList = document.getElementById("complaintList");
-const paymentList = document.getElementById("paymentList");
+if (complaintList) {
+    window.addEventListener('load', loadAdminData);
+}
 
-if (complaintList || paymentList) {
-    const complaints = getData("complaints");
-    const payments = getData("payments");
+async function loadAdminData() {
+    try {
+        const response = await fetch(`${API_URL}/admin/complaints`);
+        const data = await response.json();
 
-    // Update count badges if they exist in the HTML
-    const compCount = document.getElementById("complaintCount");
-    const payCount = document.getElementById("paymentCount");
-    if (compCount) compCount.innerText = complaints.length;
-    if (payCount) payCount.innerText = payments.length;
-
-    // Show Complaints with structured HTML for scannability
-    if (complaintList) {
-        complaints.forEach(c => {
-            const li = document.createElement("li");
-            li.innerHTML = `
-                <b>ID: ${c.id}</b>
-                <span><strong>User:</strong> ${c.name}</span><br>
-                <span><strong>Type:</strong> ${c.type}</span><br>
-                <span><strong>Issue:</strong> ${c.description}</span><br>
-                <span style="display:inline-block; margin-top:5px; color: #f59e0b;">● Status: ${c.status}</span>
-            `;
-            complaintList.appendChild(li);
-        });
+        complaintList.innerHTML = data.map(c => `
+            <li>
+                <div class="card-info">
+                    <strong>${c.type}</strong> by ${c.name}<br>
+                    <span>Coordinates: ${c.location.lat.toFixed(4)}, ${c.location.lng.toFixed(4)}</span><br>
+                    <small>Status: ${c.status}</small>
+                </div>
+                ${c.status === 'Pending' ? `<button onclick="resolve('${c._id}')">Resolve</button>` : '✅'}
+            </li>
+        `).join('');
+    } catch (err) {
+        console.log("Error loading dashboard data.");
     }
+}
 
-    // Show Payments with structured HTML
-    if (paymentList) {
-        payments.forEach(p => {
-            const li = document.createElement("li");
-            li.innerHTML = `
-                <b>TXN: ${p.transactionId}</b>
-                <span><strong>Consumer:</strong> ${p.consumerNumber}</span><br>
-                <span><strong>Service:</strong> ${p.billType}</span><br>
-                <span><strong>Amount:</strong> ₹${p.amount}</span><br>
-                <span style="color: #16a34a;">✓ Status: ${p.status}</span>
-            `;
-            paymentList.appendChild(li);
-        });
-    }
+async function resolve(id) {
+    await fetch(`${API_URL}/admin/resolve/${id}`, { method: 'PATCH' });
+    loadAdminData(); // Refresh list
 }
